@@ -1,0 +1,160 @@
+.home {
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+    font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+    height: 100px;
+    width: 600px;
+  }
+  
+  .title {
+    font-size: 22px;
+    margin-bottom: 10px;
+    font-family: "Montserrat", Helvetica, sans-serif;
+  }
+  
+  .list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .checked-item,
+  .not-checked-item {
+    margin-left: 10px;
+  }
+  
+  .checked-item {
+    text-decoration: line-through;
+  }
+  
+  .item-menu {
+    flex: 1;
+    margin: 40px 80px;
+    font-family: "Montserrat", Helvetica, sans-serif;
+    font-weight: 200;
+    font-size: 22px;
+    color: #3A3A3A;
+    letter-spacing: 1.5px;
+    line-height: 31.37px;
+    background: none;
+    border: none;
+  }
+  
+  .ntfc-box {
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    margin: 15px;
+  }
+  
+  .ntfc-box:hover {
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 3px 16px 0 rgba(0, 0, 0, 0.03);
+    transform: scale(1.02, 1.02);
+    cursor: pointer;
+  }
+  
+  .ntfc-siemens {
+    border-bottom: 3px solid rgba(0, 153, 153, 0.8);
+  }
+  
+  h2 {
+    display: inline-block;
+    margin-right: 10px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    font-family: "Montserrat", Helvetica, sans-serif;
+    font-size: 14px;
+    color: #545454;
+    letter-spacing: 0;
+    line-height: 24px;
+  }
+  
+  h3 {
+    margin-top: 4px;
+    display: flex-column;
+    opacity: 0.9;
+    font-family: "Montserrat", Helvetica, sans-serif;
+    font-size: 17px;
+    font-weight: 500;
+    color: #222629;
+    letter-spacing: 0.4px;
+    line-height: 18.24px;
+  }
+  
+  .ntfc-description {
+    display: flex-column;
+    opacity: 0.9;
+    font-family: "Montserrat", Helvetica, sans-serif;
+    font-size: 13.22px;
+    color: #2D3337;
+    letter-spacing: 0;
+    line-height: 13.54px;
+  }
+  
+  .date {
+    margin-right: 10px;
+  }
+  
+  .time {
+    padding: 10px 15px;
+  }
+  
+  .id {
+    float: right;
+  }
+  
+  .notification-list {
+    margin: auto;
+    position: relative;
+    top: 130px;
+    height: 100%;
+    width: 75%;
+  }
+  
+  .navBar {
+    background: #ffffff;
+    position: fixed;
+    display: flex;
+    top: 0;
+    width: 100%;
+    height: 100px;
+    box-shadow: 0 1px 18px rgba(0, 0, 0, 0.1);
+  }
+  
+  div.checkList {
+    border-radius: 4px;
+    margin-bottom: 15px;
+    margin-top: 15px;
+    position: relative;
+    height: 100%;
+    width: 75%;
+    left: 100%;
+    font-family: "Montserrat", Helvetica, sans-serif;
+    font-size: 13.22px;
+  }
+  
+  /* .progress {
+    color: 3px solid rgba(0, 153, 153, 0.8);
+  } */
+  
+  .progress::-moz-progress-bar {
+    background-color: 3px solid rgba(0, 153, 153, 0.8);
+  }
+  
+  .progress::-webkit-progress-value {
+    background-color: 3px solid rgba(0, 153, 153, 0.8);
+  }
+  
+  .progress {
+    margin-top: 20px;
+    width: 80%;
+    background-color: 3px solid rgba(0, 153, 153, 0.8);
+  }
