@@ -1,3 +1,5 @@
 # WordGame
- Basic word game  inorder to memoryze new words. 
- Just Test
+ Basic word game  inorder to memorize new words with below Techs.
+- Backend -> .Net 
+- Database -> PostgreSql
+-Front -end -> React
