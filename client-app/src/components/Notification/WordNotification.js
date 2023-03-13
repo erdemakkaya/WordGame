@@ -1,4 +1,3 @@
-import 'antd/dist/antd.css'
 // import './index.css'
 import { notification } from 'antd'
 

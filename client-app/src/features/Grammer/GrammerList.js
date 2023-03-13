@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from "react-router-dom";
-import 'antd/dist/antd.css';
 import { Table, Tag, Typography, Button, Row, Col, Modal } from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import WordLayout from '../../components/Layout';
