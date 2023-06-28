@@ -34,6 +34,7 @@ namespace WordGame.Core.Repositories.Base.Interfaces
         Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate = null);
         //Task<int> CountAsync(ISpecification<T> spec);
 
+
     }
     public interface IRepository { }
 }

@@ -47,6 +47,15 @@ namespace WordGame.Application.Mapper
                 .ForMember(t => t.Tags, m => m.MapFrom(u => MapToJson(u.Tags)));
 
             CreateMap<Select, SelectModel>().ReverseMap();
+            CreateMap<Series, SeriesDto>()
+.ForMember(t => t.Tags, m => m.MapFrom(u => MapFromJson(u.Tags)));
+
+            CreateMap<SeriesDto, Series>()
+                .DoNotValidate(x => x.Id)
+                .ForMember(t => t.Tags, m => m.MapFrom(u => MapToJson(u.Tags)));
+
+            CreateMap<Episode, EpisodeDto>().ReverseMap();
+            CreateMap<Subtitle, SubtitleDto>().ReverseMap();
 
         }
 

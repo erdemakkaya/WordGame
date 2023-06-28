@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31729.503
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32421.90
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WordGame.Core", "WordGame.Core\WordGame.Core.csproj", "{9FB43DE8-BEA9-4B6C-BBB6-80FC5509D6EF}"
 EndProject
@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WordGame.Infrastructure", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WordGame.WEB", "WordGame.WEB\WordGame.WEB.csproj", "{9FD49C07-495B-4ECB-A3C0-C59DA1596836}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordGame.Test", "WordGame.Test\WordGame.Test.csproj", "{007A017E-F4FB-4279-A6D1-FDBBB8C260A8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WordGame.Test", "WordGame.Test\WordGame.Test.csproj", "{007A017E-F4FB-4279-A6D1-FDBBB8C260A8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

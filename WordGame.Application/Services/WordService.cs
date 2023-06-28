@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using WordGame.Core.Dto;
@@ -15,17 +16,26 @@ namespace WordGame.Application.Services
 		IUnitofWork _unitOfWork;
 		IWordRepository _repository;
 		IMapper _mapper;
+		private readonly IValidator<WordModel> _validator;
 
 
-		public WordService(IMapper mapper,IUnitofWork unitOfWork)
+
+		public WordService(IMapper mapper,IUnitofWork unitOfWork, IValidator<WordModel> validator, IWordRepository repository)
 		{
 			_unitOfWork = unitOfWork;
-			_repository = _unitOfWork.GetCustomRepository<IWordRepository>();
+			_repository = repository;
 			_mapper = mapper;
+			_validator = validator;
 		}
 
 		public async Task<WordModel> CreateAsync(WordModel dtoObject)
 		{
+
+			var validationResult = await _validator.ValidateAsync(dtoObject);
+			if (!validationResult.IsValid)
+			{
+				return null;
+			}
 			if (dtoObject == null || dtoObject.WordName.IsNullOrEmpty())
 			{
 				return null;
@@ -40,6 +50,11 @@ namespace WordGame.Application.Services
 
 		public async Task<WordModel> CreateOrUpdateAsync(WordModel dtoObject)
 		{
+			var validationResult = await _validator.ValidateAsync(dtoObject);
+			if (!validationResult.IsValid)
+			{
+				return null;
+			}
 			bool isExist = await _repository.AnyAsync(x => x.Id.Equals(dtoObject.Id));
 			if (isExist) return await UpdateAsync(dtoObject);
 
@@ -123,6 +138,8 @@ namespace WordGame.Application.Services
 				entity.FalseCount++;
 			}
 			await _repository.UpdateAsync(entity);
+			await _unitOfWork.SaveChangesAsync();
+
 			return true;
 		}
 		public async Task<IEnumerable<WordModel>> GetWordsByStatisticAsync()

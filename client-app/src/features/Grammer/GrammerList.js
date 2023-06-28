@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from "react-router-dom";
-import { Table, Tag, Typography, Button, Row, Col, Modal } from 'antd';
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { Input,Table, Tag, Typography, Button, Row, Col, Modal, Tooltip } from 'antd';
+import { EditOutlined, DeleteOutlined,SearchOutlined,RedoOutlined } from '@ant-design/icons';
 import WordLayout from '../../components/Layout';
 import GrammerService from '../../services/grammerService'
 
@@ -39,7 +39,54 @@ export default function List() {
       title: 'Name',
       key: 'name',
       dataIndex: 'name',
-      render: text => <a>{text}</a>,
+      render: (text, record) => <a>  <Link to={`/creategrammer/${record.id}`}>
+    {text}
+    </Link> </a>,
+      filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => {
+
+        return (
+          <>
+            <Input
+              autoFocus
+              value={selectedKeys[0]}
+              placeholder="Type text here"
+              onPressEnter={() => {
+                confirm();
+
+              }}
+              onChange={(e) => {
+
+                setSelectedKeys(e.target.value ? [e.target.value] : [])
+
+              }
+              }
+
+              onBlur={() => {
+                confirm();
+
+              }}>
+
+            </Input>
+
+            <Tooltip title="search">
+              <Button style={{ marginLeft: 'auto' }} type="primary" icon={<SearchOutlined />} onClick={() => {
+                confirm();
+              }} />
+            </Tooltip>
+            
+            <Tooltip title="reset">
+              <Button style={{ marginLeft: 'auto' }} type="danger"  icon={<RedoOutlined  />} onClick={() => {
+                clearFilters();
+              }} />
+            </Tooltip>
+          </>
+        )
+      },
+      filterIcon: () => {
+        return <SearchOutlined />
+      },
+      filterSearch: true,
+      onFilter: (value, record) => record.name.toLowerCase().includes(value.toLowerCase()),
     },
     {
       title: 'Category',

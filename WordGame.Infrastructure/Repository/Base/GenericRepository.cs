@@ -7,16 +7,17 @@ using WordGame.Core.Entities.Base.Interfaces;
 using WordGame.Core.Repositories.Base.Interfaces;
 using WordGame.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using WordGame.Core.Context;
 
 namespace WordGame.Infrastructure.Repository.Base
 {
 	public class Repository<T,TId> : IRepository<T,TId> where T : class, IEntityBase<TId>
 	{
-		private readonly DbContext _dbContext;
+		private readonly BaseContext _dbContext;
 		private readonly DbSet<T> _dbSet;
 
 
-		public Repository(DbContext dbContext)
+		public Repository(BaseContext dbContext)
 		{
 			_dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
 			_dbSet = _dbContext.Set<T>();
@@ -96,7 +97,7 @@ namespace WordGame.Infrastructure.Repository.Base
 
 		public async Task DeleteAsync(T entity)
 		{
-			_dbSet.Remove(entity);
+			  _dbSet.Remove(entity);
 		}
 
 		public async Task<bool> AnyAsync(Expression<Func<T, bool>> predicate = null)

@@ -17,12 +17,11 @@ namespace WordGame.Application.Services
 		IMapper _mapper;
 
 
-		public GrammerService( IMapper mapper, IUnitofWork unitOfWork)
+		public GrammerService( IMapper mapper, IUnitofWork unitOfWork, IGrammerRepository repository)
 		{
 			_unitOfWork = unitOfWork;
-			_repository = _unitOfWork.GetCustomRepository<IGrammerRepository>();
+			_repository = repository;
 			_mapper = mapper;
-
 		}
 
 		public async Task<GrammerModel> CreateAsync(GrammerModel dtoObject)

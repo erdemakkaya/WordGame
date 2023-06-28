@@ -12,26 +12,32 @@ using Microsoft.Extensions.DependencyInjection;
 using WordGame.Core.Entities.Base.Interfaces;
 using WordGame.Core.Repositories.Base.Interfaces.RepositoryProvider;
 using WordGame.Infrastructure.Repository.Providers;
+using Autofac;
+using Microsoft.AspNetCore.Builder;
+using Autofac.Extensions.DependencyInjection;
+using WordGame.Core.Context;
 
 namespace WordGame.Infrastructure.UnitOfWork
 {
-	public class UnitOfWork<TDbContext> : IUnitofWork
-		where TDbContext : DbContext
+	public class UnitOfWork: IUnitofWork
+		
 	{
-		private readonly TDbContext _context;
+		//private readonly ILifetimeScope _container;
+		private readonly BaseContext _context;
 		private readonly IRepositoryProvider _repositoryProvider;
 		private IDbContextTransaction _transaction;
 		private bool _disposed;
 
-		public UnitOfWork(TDbContext context)
+		public UnitOfWork(BaseContext context)
 		{
 			_context = context;
+			//_container = app.ApplicationServices.GetAutofacRoot();
 			_transaction = _context.Database.BeginTransaction();
-			if (_repositoryProvider == null)
-			{
-				_repositoryProvider = new RepositoryProvider();
-			}
-			_repositoryProvider.DbContext = _context;
+			//if (_repositoryProvider == null)
+			//{
+			//	_repositoryProvider = new RepositoryProvider();
+			//}
+			//_repositoryProvider.DbContext = _context;
 		}
 
 
@@ -127,7 +133,7 @@ namespace WordGame.Infrastructure.UnitOfWork
 
 		public IRepository<TEntity, TId> GetDefaultRepo<TEntity, TId>() where TEntity : class, IEntityBase<TId>
 		{
-			return _repositoryProvider.GetDefaultRepository<TEntity, TId>();
+			return new Repository<TEntity, TId>(_context);
 		}
 
 		public async void CommitAsync()

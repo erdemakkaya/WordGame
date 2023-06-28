@@ -3,7 +3,6 @@ import { useNavigate, Link } from "react-router-dom";
 import { Input, Table, Tag, Typography, Button, Row, Col, Badge, Statistic, Modal, Tooltip } from 'antd';
 import { ArrowUpOutlined, EditOutlined, DeleteOutlined, SearchOutlined, RedoOutlined} from '@ant-design/icons';
 import WordLayout from '../Layout';
-
 import WordService from '../../services/wordService'
 
 

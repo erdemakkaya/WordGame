@@ -2,13 +2,14 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using WordGame.Core.Context;
 using WordGame.Core.Entities;
 using WordGame.Core.Entities.Base.Interfaces;
 
 
 namespace WordGame.Infrastructure.Data
 {
-	public class WordGameContext : Microsoft.EntityFrameworkCore.DbContext
+	public class WordGameContext :BaseContext
 	{
 		public WordGameContext(DbContextOptions<WordGameContext> options) : base(options)
 		{
@@ -21,11 +22,11 @@ namespace WordGame.Infrastructure.Data
 		{
 			foreach (var auditableEntity in ChangeTracker.Entries<IFullAudited>())
 			{
-				if (auditableEntity.State == Microsoft.EntityFrameworkCore.EntityState.Added ||
-					auditableEntity.State == Microsoft.EntityFrameworkCore.EntityState.Modified)
+				if (auditableEntity.State == EntityState.Added ||
+					auditableEntity.State == EntityState.Modified)
 				{
 					auditableEntity.Entity.LastModificationTime = DateTime.Now;
-					if (auditableEntity.State == Microsoft.EntityFrameworkCore.EntityState.Added)
+					if (auditableEntity.State == EntityState.Added)
 					{
 						auditableEntity.Entity.CreateDate = DateTime.Now;
 					}
@@ -39,6 +40,9 @@ namespace WordGame.Infrastructure.Data
 		public DbSet<Grammer> Grammers { get; set; }
 
 		public DbSet<Select> Selects { get; set; }
+		public DbSet<Episode> Episodes { get; set; }
+		public DbSet<Series> Series { get; set; }
+		public DbSet<Subtitle> Subtitles { get; set; }
 
 	}
 }

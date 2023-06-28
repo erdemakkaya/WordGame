@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.Internal.Mappers;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using Moq.EntityFrameworkCore;
@@ -20,6 +21,7 @@ namespace WordGame.Test.EntityTests
 	public class WordTest
 	{
 		IMapper _mapper;
+		private readonly IValidator<WordModel> _validator;
 		private Mock<IWordRepository> _wordRepository;
 		private Mock<IUnitofWork> _unitOfWork;
 		WordService wordService;
@@ -83,7 +85,6 @@ namespace WordGame.Test.EntityTests
 
 				_unitOfWork = new Mock<IUnitofWork>();
 
-				
 
 				_wordRepository = new Mock<IWordRepository>();
 
@@ -104,11 +105,9 @@ namespace WordGame.Test.EntityTests
 				_wordRepository.Setup(p => p.GetWordByNameAsync(It.IsAny<string>()))
 					.ReturnsAsync((string name) => words.FirstOrDefault(x => name.ToLower().Equals(x.WordName.ToLower())));
 
-				_unitOfWork.Setup(p => p.GetCustomRepository<IWordRepository>())
-					.Returns(_wordRepository.Object);
 				_unitOfWork.Setup(p => p.SaveChangesAsync(It.IsAny<bool>())).ReturnsAsync(1);
 
-				wordService = new WordService(_mapper, _unitOfWork.Object);
+				wordService = new WordService(_mapper, _unitOfWork.Object, _validator,_wordRepository.Object);
 			}
 		}
 

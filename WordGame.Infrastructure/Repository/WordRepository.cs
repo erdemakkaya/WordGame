@@ -2,17 +2,16 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using WordGame.Core.Context;
 using WordGame.Core.Entities;
-using WordGame.Core.Repositories;
 using WordGame.Core.Repositories.CustomRepositories;
-using WordGame.Infrastructure.Data;
 using WordGame.Infrastructure.Repository.Base;
 
 namespace WordGame.Infrastructure.Repository
 {
 	public class WordRepository : Repository<Word,int>, IWordRepository
 	{
-		public WordRepository(Microsoft.EntityFrameworkCore.DbContext dbContext) : base(dbContext)
+		public WordRepository(BaseContext dbContext) : base(dbContext)
 		{
 		}
 		public async Task<IEnumerable<Word>> GetRandomWordsAsync(int count)

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WordGame.Core.Context;
 using WordGame.Core.Entities.Base.Interfaces;
 using WordGame.Core.Repositories.Base.Interfaces;
 using WordGame.Core.Repositories.Base.Interfaces.RepositoryProvider;
@@ -16,7 +17,7 @@ namespace WordGame.Infrastructure.Repository.Providers
 
 		private readonly Factory _factory;
 		protected Dictionary<Type, object> Repositories { get; private set; }
-		public DbContext DbContext { get; set; }
+		public BaseContext DbContext { get; set; }
 
 		public RepositoryProvider()
 		{
@@ -24,7 +25,7 @@ namespace WordGame.Infrastructure.Repository.Providers
 			Repositories = new Dictionary<Type, object>();
 		}
 
-		public T GetCustomRepository<T>(Func<DbContext, object> factory = null) where T : class, IRepository
+		public T GetCustomRepository<T>(Func<BaseContext, object> factory = null) where T : class, IRepository
 		{
 			object repository;
 			Repositories.TryGetValue(typeof(T), out repository);
@@ -39,9 +40,9 @@ namespace WordGame.Infrastructure.Repository.Providers
 		{
 			return new Repository<T, TId>(DbContext);
 		}
-		private T CreateRepository<T>(Func<DbContext, object> factory, DbContext dbContext) where T : class, IRepository
+		private T CreateRepository<T>(Func<BaseContext, object> factory, BaseContext dbContext) where T : class, IRepository
 		{
-			Func<DbContext, object> repositoryFactory;
+			Func<BaseContext, object> repositoryFactory;
 			if (factory != null)
 			{
 				repositoryFactory = factory;

@@ -17,6 +17,12 @@ using WordGame.Core.UnitOfWorks;
 using WordGame.Infrastructure.UnitOfWork;
 using AutoMapper;
 using WordGame.Application.Mapper;
+using FluentValidation;
+using WordGame.Application.Validators;
+using Autofac;
+using Microsoft.AspNetCore.Http;
+using Autofac.Extensions.DependencyInjection;
+using WordGame.Application.ConfigurationModules;
 
 namespace WordGame.WEB
 {
@@ -28,11 +34,12 @@ namespace WordGame.WEB
 		}
 
 		public IConfiguration Configuration { get; }
+		public IContainer ApplicationContainer { get; private set; }
 
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-
+			services.AddHealthChecks();
 			services.AddControllers();
 			services.AddSwaggerGen(c =>
 			{
@@ -42,11 +49,6 @@ namespace WordGame.WEB
 			services.AddDbContext<WordGameContext>(options =>
 				options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
-			services.AddScoped(typeof(IUnitofWork), typeof(UnitOfWork<WordGameContext>));
-	
-			services.AddScoped<IWordService, WordService>();
-			services.AddScoped<IGrammerService, GrammerService>();
-			services.AddScoped<IOptionsService, OptionService>();
 			services.AddCors(opt =>
 			{
 				opt.AddPolicy("CorsPolicy", policy =>
@@ -55,15 +57,19 @@ namespace WordGame.WEB
 				});
 			});
 
-			#region AutoMapperSection
-			//Auto mapper'ı ekliyoruz
-			var mappingConfig = new MapperConfiguration(mc =>
-			{
-				mc.AddProfile(new WordGameDtoMapper());
-			});
-			IMapper mapper = mappingConfig.CreateMapper();
-			services.AddSingleton(mapper);
-			#endregion
+			//#region AutoMapperSection
+			////Auto mapper'ı ekliyoruz
+			//var mappingConfig = new MapperConfiguration(mc =>
+			//{
+			//	mc.AddProfile(new WordGameDtoMapper());
+			//});
+			//IMapper mapper = mappingConfig.CreateMapper();
+			//services.AddSingleton(mapper);
+
+			//#endregion
+
+			services.AddValidatorsFromAssemblyContaining<WordValidator>();
+
 
 		}
 
@@ -85,10 +91,41 @@ namespace WordGame.WEB
 
 			app.UseAuthorization();
 
+			app.UseHealthChecks("/health", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions()
+			{
+
+				ResponseWriter =async (context,report)  =>
+				{
+					await context.Response.WriteAsync("OK");
+				}
+
+			});
+
 			app.UseEndpoints(endpoints =>
 			{
 				endpoints.MapControllers();
 			});
+		}
+
+		public void ConfigureContainer(ContainerBuilder builder)
+		{
+			#region WAY-1 (Autofac Module)
+
+			// Add modules registrations.
+
+			builder.RegisterModule(new ContainerConfigurations());
+			//builder.RegisterModule(new MyAutofacModule2());
+			//builder.RegisterModule(new MyAutofacModule3());
+
+			#endregion
+
+			#region WAY-2 (Direct Registration)
+
+			// Add services registrations.
+
+			//builder.RegisterType<MyService>().As<IService>();
+
+			#endregion
 		}
 	}
 }
