@@ -78,9 +78,12 @@ namespace WordGame.Infrastructure.Repository.Base
 			return await query.ToListAsync();
 		}
 
-		public virtual async Task<T> GetByIdAsync(TId id)
+		public virtual async Task<T> GetByIdAsync(TId id, string includeString = null)
 		{
-			return await _dbSet.FindAsync(id);
+			IQueryable<T> query = _dbSet;
+			if (includeString != null) query = query.Include(includeString);
+
+			return await query.FirstOrDefaultAsync(x=>x.Id.Equals(id));
 		}
 
 		public async Task<T> AddAsync(T entity)
@@ -89,9 +92,18 @@ namespace WordGame.Infrastructure.Repository.Base
 			return entity;
 		}
 
+		public async Task<IEnumerable<T>> AddRangeAsync(IEnumerable<T> list)
+		{
+			await _dbSet.AddRangeAsync(list);
+			return list;
+		}
+
 		public async Task<T> UpdateAsync(T entity)
 		{
-			_dbContext.Entry(entity).State = EntityState.Modified;
+			if (_dbContext.Entry(entity).State != EntityState.Modified)
+			{
+				_dbContext.Entry(entity).State = EntityState.Modified;
+			}
 			return entity;
 		}
 

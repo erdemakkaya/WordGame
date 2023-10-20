@@ -7,6 +7,8 @@ using WordGame.WEB.Controllers.Base;
 
 namespace WordGame.WEB.Controllers
 {
+	[Route("api/[controller]")]
+	[ApiController]
 	public class StatisticController : BaseApiController
 	{
 		private readonly IStatisticService _statisticService;

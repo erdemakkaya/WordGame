@@ -25,16 +25,17 @@ namespace WordGame.Core.Repositories.Base.Interfaces
                                         List<Expression<Func<T, object>>> includes = null,
                                         bool disableTracking = true);
         //Task<IReadOnlyList<T>> GetAsync(ISpecification<T> spec);
-        Task<T> GetByIdAsync(TId id);
+        Task<T> GetByIdAsync(TId id, string includeString = null);
         Task<T> AddAsync(T entity);
         Task<T> UpdateAsync(T entity);
         Task DeleteAsync(T entity);
         Task<bool> AnyAsync(Expression<Func<T, bool>> predicate = null);
         Task<int> CountAsync(Expression<Func<T, bool>> predicate = null);
         Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate = null);
-        //Task<int> CountAsync(ISpecification<T> spec);
+		Task<IEnumerable<T>> AddRangeAsync(IEnumerable<T> list);
+		//Task<int> CountAsync(ISpecification<T> spec);
 
 
-    }
+	}
     public interface IRepository { }
 }

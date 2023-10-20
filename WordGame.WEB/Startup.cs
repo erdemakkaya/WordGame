@@ -46,9 +46,7 @@ namespace WordGame.WEB
 				c.SwaggerDoc("v1", new OpenApiInfo { Title = "WordGame.WEB", Version = "v1" });
 			});
 
-			services.AddDbContext<WordGameContext>(options =>
-				options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
-
+			
 			services.AddCors(opt =>
 			{
 				opt.AddPolicy("CorsPolicy", policy =>

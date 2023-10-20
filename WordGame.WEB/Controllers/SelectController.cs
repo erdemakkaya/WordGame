@@ -9,6 +9,8 @@ using WordGame.WEB.Helper;
 
 namespace WordGame.WEB.Controllers
 {
+	[Route("api/[controller]")]
+	[ApiController]
 	public class SelectController : BaseApiController
 	{
 		private readonly IOptionsService _optionService;

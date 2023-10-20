@@ -6,7 +6,9 @@ import {
     FormOutlined,
     BarsOutlined,
     TrophyOutlined,
-    ClusterOutlined
+    ClusterOutlined,
+    VideoCameraOutlined,
+    StarOutlined
   } from '@ant-design/icons';
   import {
     Link,
@@ -32,7 +34,6 @@ function WordSider({collapsed}) {
             <Link to="/list">
             Get Words
           </Link>
-            
             </Menu.Item>
             <Menu.Item key="3" icon={<TrophyOutlined/>}>
             <Link to="/test">
@@ -47,10 +48,21 @@ function WordSider({collapsed}) {
             </Menu.Item>
             <Menu.Item key="5" icon={<ClusterOutlined />}>
             <Link to="/listgrammer">
-            List  Grammer
+              Grammers
+          </Link>
+
+          
+            </Menu.Item>
+            <Menu.Item key="6" icon={<VideoCameraOutlined  />}>
+            <Link to="/listmovie">
+            Movies
           </Link>
             </Menu.Item>
-            
+            <Menu.Item key="7" icon={<StarOutlined />}>
+            <Link to="/listsubtitle/0">
+            Favourite Subs
+          </Link>
+            </Menu.Item>
           </Menu>
       </Sider>
 </React.StrictMode>

@@ -24,18 +24,26 @@ namespace WordGame.Application.ConfigurationModules
         protected override void Load(ContainerBuilder builder)
         {
 
-           
-            //builder.Register(c =>
-            //{
-            //    var config = c.Resolve<IConfiguration>();
 
-            //    var opt = new DbContextOptionsBuilder<WordGameContext>();
-            //    opt.UseNpgsql(config.GetConnectionString("DefaultConnection"));
+			//builder.Register(c =>
+			//{
+			//    var config = c.Resolve<IConfiguration>();
 
-            //return new WordGameContext(opt.Options);
-            //}).AsSelf().InstancePerLifetimeScope();
+			//    var opt = new DbContextOptionsBuilder<WordGameContext>();
+			//    opt.UseNpgsql(config.GetConnectionString("DefaultConnection"));
 
-            builder.RegisterType<WordGameContext>().As<BaseContext>();
+			builder.Register(c =>
+			{
+				var config = c.Resolve<IConfiguration>();
+
+				var opt = new DbContextOptionsBuilder<WordGameContext>();
+				opt.UseNpgsql(config.GetConnectionString("DefaultConnection"));
+
+				return new WordGameContext(opt.Options);
+			}).As<BaseContext>().InstancePerLifetimeScope();
+			//return new WordGameContext(opt.Options);
+			//}).AsSelf().InstancePerLifetimeScope();
+
 
             builder.RegisterType<UnitOfWork>().As<IUnitofWork>().InstancePerLifetimeScope();
             #region AutoMapperSection

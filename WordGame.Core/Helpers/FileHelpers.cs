@@ -11,14 +11,15 @@ namespace WordGame.Core.Helpers
 {
 	public static class FileHelpers
 	{
-		public static List<SrtModel> ParseSRT(string srtFilePath, bool isTr = false)
+		private static List<SrtModel> ParseSRT(string[] fileContent, bool isTr = false)
 		{
 			int increaseCount;
-			Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-			var fileContent = isTr ? File.ReadAllLines(srtFilePath, Encoding.GetEncoding("Windows-1254")) : File.ReadAllLines(srtFilePath);
 			if (fileContent.Length <= 0)
 				return null;
+			var list = fileContent.ToList();
+			list.RemoveAll(x => string.IsNullOrEmpty(x));
 			var model = new SrtModel();
+			fileContent = list.ToArray();
 			int length = fileContent.Length;
 
 			var content = new List<SrtModel>();
@@ -53,5 +54,26 @@ namespace WordGame.Core.Helpers
 			}
 			return content;
 		}
+
+		private static List<string> CombineContent(List<string> list)
+		{
+			 list.RemoveAll(x=> string.IsNullOrEmpty(x));
+			return null;
+		}
+
+		public static List<SrtModel> ParseSRTByFilePath(string filePath, bool isTr = false)
+		{
+			Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+			var fileContent = isTr ? File.ReadAllLines(filePath, Encoding.GetEncoding("Windows-1254")) : File.ReadAllLines(filePath);
+
+			return ParseSRT(fileContent);
+		}
+
+		public static List<SrtModel> ParseSRTBySB(StringBuilder file, bool isTr = false)
+		{
+			string[] lines = file.ToString().Split(Environment.NewLine.ToCharArray());
+			return ParseSRT(lines);
+		}
+
 	}
 }

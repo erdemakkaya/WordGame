@@ -11,7 +11,10 @@ import List from "./components/List/List";
 import WordCardFetch from "./components/WordCard/WordCardFetch" ; 
 import GrammerCreate from "./features/Grammer/GrammerCreate";
 import GrammerList from "./features/Grammer/GrammerList";
+import MovieCreate from "./features/Movie/MovieCreate";
+import MovieList from "./features/Movie/MovieList";
 import Home from './components/Home/Home';
+import SubtitleList from './features/Episode/SubtitleList';
 
 function App() {
   return (
@@ -25,6 +28,9 @@ function App() {
            <Route  path="/test" element = {<WordCardFetch />} />
            <Route  path="/creategrammer/:id" element = {<GrammerCreate />} />
            <Route  path="/listgrammer" element = {<GrammerList />} />
+           <Route  path="/createmovie/:id" element = {<MovieCreate />} />
+           <Route  path="/listsubtitle/:id" element = {<SubtitleList />} />
+           <Route  path="/listmovie" element = {<MovieList />} />
       </Routes>
     </Router>
   </React.StrictMode>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,9 +14,10 @@ namespace WordGame.Core.Services
 		Task<SubtitleDto> CreateAsync(SubtitleDto dtoObject);
 		Task<SubtitleDto> CreateOrUpdateAsync(SubtitleDto dtoObject);
 		Task<bool> DeleteAsync(int id);
-		Task<SubtitleDto> GetAsync();
+		Task<IEnumerable<SubtitleDto>> GetAsync();
 		Task<SubtitleDto> GetAsync(int id);
 		Task<IEnumerable<SubtitleDto>> GetByEpisodeId(int episodeId);
 		Task<SubtitleDto> UpdateAsync(SubtitleDto dtoObject);
+		Task<bool> CreateFromFileAsync(IFormFile formFile, int EpisodeId);
 	}
 }

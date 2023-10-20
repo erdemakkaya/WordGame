@@ -20,7 +20,7 @@ namespace WordGame.Application.Services
 
 
 
-		public WordService(IMapper mapper,IUnitofWork unitOfWork, IValidator<WordModel> validator, IWordRepository repository)
+		public WordService(IMapper mapper, IUnitofWork unitOfWork, IValidator<WordModel> validator, IWordRepository repository)
 		{
 			_unitOfWork = unitOfWork;
 			_repository = repository;
@@ -137,7 +137,7 @@ namespace WordGame.Application.Services
 			{
 				entity.FalseCount++;
 			}
-			await _repository.UpdateAsync(entity);
+			var updatedEntity = await _repository.UpdateAsync(entity);
 			await _unitOfWork.SaveChangesAsync();
 
 			return true;

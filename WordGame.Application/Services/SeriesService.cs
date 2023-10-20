@@ -53,15 +53,14 @@ namespace WordGame.Application.Services
 
 		public async Task<SeriesDto> GetAsync(int id)
 		{
-			var entity = await _repository.GetByIdAsync(id);
-
+			var entity = await _repository.GetByIdAsync(id,"Episodes");
 			var mappedModel = _mapper.Map<SeriesDto>(entity);
 			return mappedModel;
 		}
 
 		public async Task<IEnumerable<SeriesDto>> GetAsync()
 		{
-			var entities = await _repository.GetAllAsync();
+			var entities = await _repository.GetAsync(null,null,"Episodes");
 			var mappedGrammerModels = _mapper.Map<IEnumerable<SeriesDto>>(entities);
 			return mappedGrammerModels;
 		}

@@ -1,8 +1,12 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
+using WordGame.Application.Extensions;
 using WordGame.Core.Dto;
 using WordGame.Core.Entities;
+using WordGame.Core.Helpers;
 using WordGame.Core.Repositories.Base.Interfaces;
 using WordGame.Core.Services;
 using WordGame.Core.UnitOfWorks;
@@ -29,6 +33,26 @@ namespace WordGame.Application.Services
 			await _unitOfWork.SaveChangesAsync();
 			var addedModel = _mapper.Map<SubtitleDto>(newEntity);
 			return addedModel;
+		}
+
+		public async Task<bool> CreateFromFileAsync(IFormFile formFile, int EpisodeId)
+		{
+			if (formFile == null || formFile.Length == 0)
+				return false;
+
+			var fileContent = formFile.ReadAsList();
+			var result = FileHelpers.ParseSRTBySB(fileContent);
+
+			var mappedList = _mapper.Map<IEnumerable<SubtitleDto>>(result, opts =>
+			opts.Items["EpisodeId"] = EpisodeId);
+
+			var mappedRange = _mapper.Map<IEnumerable<Subtitle>>(mappedList);
+			var list = await _repository.AddRangeAsync(mappedRange);
+
+			await _unitOfWork.SaveChangesAsync();
+
+			return true;
+
 		}
 
 		public async Task<SubtitleDto> CreateOrUpdateAsync(SubtitleDto dtoObject)
@@ -70,7 +94,7 @@ namespace WordGame.Application.Services
 
 		public async Task<IEnumerable<SubtitleDto>> GetAsync()
 		{
-			var result = await _repository.GetAllAsync();
+			var result = await _repository.GetAsync(x=> x.IsFavourite && !x.IsDeleted);
 
 			var mappedModel = _mapper.Map<IEnumerable<SubtitleDto>>(result);
 			return mappedModel;
@@ -83,5 +107,6 @@ namespace WordGame.Application.Services
 			return mappedModel;
 		}
 
+	
 	}
 }

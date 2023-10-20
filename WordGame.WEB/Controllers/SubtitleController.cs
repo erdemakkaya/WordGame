@@ -6,9 +6,12 @@ using WordGame.Core.Dto;
 using WordGame.Core.Services;
 using WordGame.WEB.Controllers.Base;
 using WordGame.WEB.Helper;
+using WordGame.WEB.Models;
 
 namespace WordGame.WEB.Controllers
 {
+	[Route("api/[controller]")]
+	[ApiController]
 	public class SubtitleController : BaseApiController
 	{
 		private readonly ISubtitleService _subtitleService;
@@ -26,11 +29,20 @@ namespace WordGame.WEB.Controllers
 			return Success("Subtitle listed.", null, Subtitle);
 		}
 
-		[HttpGet]
+		[HttpGet("{id}")]
 		[ProducesResponseType(typeof(IEnumerable<SubtitleDto>), 200)]
-		public async Task<IActionResult> Get(int seriesId)
+		public async Task<IActionResult> Get(int id)
 		{
-			var Subtitle = await _subtitleService.GetBySeriesId(seriesId);
+			var Subtitle = await _subtitleService.GetByEpisodeId(id);
+
+			return Success("Subtitle listed.", null, Subtitle);
+		}
+
+		[HttpGet("sub/{id}")]
+		[ProducesResponseType(typeof(IEnumerable<SubtitleDto>), 200)]
+		public async Task<IActionResult> GetBySubtitleId(int id)
+		{
+			var Subtitle = await _subtitleService.GetAsync(id);
 
 			return Success("Subtitle listed.", null, Subtitle);
 		}
@@ -39,26 +51,12 @@ namespace WordGame.WEB.Controllers
 		[ProducesResponseType(typeof(ApiResult<SubtitleDto>), 200)]
 		[ProducesResponseType(typeof(ApiResult<SubtitleDto>), 400)]
 		[ProducesResponseType(typeof(ApiResult<SubtitleDto>), 500)]
-		[Consumes("application/json")]
-		public async Task<IActionResult> Post([FromBody] SubtitleDto model)
+		//[Consumes("application/json")]
+		public IActionResult Post([FromForm] FileModel formData)
 		{
-			try
-			{
-				if (model == null) return NotFound("Subtitle not found.", null, model);
+			var result = _subtitleService.CreateFromFileAsync(formData.FormFile, formData.episodeId);
 
-				var result = await _subtitleService.CreateAsync(model);
-
-				if (result == null)
-				{
-					return NotFound("Subtitle not found.", null, model);
-				}
-
-				return Success("Subtitle added successfully.", null, model);
-			}
-			catch (Exception ex)
-			{
-				return Error<object>("Something went wrong!", ex.Message, null);
-			}
+			return null;
 		}
 
 		[HttpPut("{id}")]

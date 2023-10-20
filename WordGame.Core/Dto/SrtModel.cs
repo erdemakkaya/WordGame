@@ -13,9 +13,6 @@ namespace WordGame.Core.Dto
 		public TimeSpan StartTime { get; set; }
 		public TimeSpan EndTime { get; set; }
 		public string Text { get; set; }
-
-
-
 	}
 }
 
@@ -27,7 +24,7 @@ namespace WordGame.Core.Dto
 //        return;
 
 //    var content = new List<SrtContent>();
-//    var segment = 1;
+//    var segment = reac1;
 //    for (int item = 0; item < fileContent.Length; item++)
 //    {
 //        if (segment.ToString() == fileContent[item])

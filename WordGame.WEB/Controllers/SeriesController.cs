@@ -9,6 +9,8 @@ using WordGame.WEB.Helper;
 
 namespace WordGame.WEB.Controllers
 {
+	[Route("api/[controller]")]
+	[ApiController]
 	public class SeriesController : BaseApiController
 	{
 		private readonly ISeriesService _seriesService;
@@ -26,6 +28,15 @@ namespace WordGame.WEB.Controllers
 			return Success("series listed.", null, series);
 		}
 
+		[HttpGet("{id}")]
+		[ProducesResponseType(typeof(IEnumerable<SubtitleDto>), 200)]
+		public async Task<IActionResult> Get(int id)
+		{
+			var series = await _seriesService.GetAsync(id);
+
+			return Success("Subtitle listed.", null, series);
+		}
+
 		[HttpPost]
 		[ProducesResponseType(typeof(ApiResult<SeriesDto>), 200)]
 		[ProducesResponseType(typeof(ApiResult<SeriesDto>), 400)]
@@ -37,7 +48,7 @@ namespace WordGame.WEB.Controllers
 			{
 				if (model == null) return NotFound("Series not found.", null, model);
 
-				var result = await _seriesService.CreateAsync(model);
+				var result = await _seriesService.CreateOrUpdateAsync(model);
 
 				if (result == null)
 				{

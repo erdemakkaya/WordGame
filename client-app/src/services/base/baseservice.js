@@ -37,6 +37,9 @@ const Requests = {
     post: (url, body) => axios.post(url, body,{
         headers: { 'Content-Type': 'application/json' }
     }).then(sleep(1000)).then(response=>response.data),
+    postFile: (url, body) => axios.post(url, body,{
+        headers: { 'Content-Type': 'multipart/form-data' }
+    }).then(sleep(1000)).then(response=>response.data),
     put: (url, body) => axios.put(url, body).then(sleep(1000)).then(response=>response.data),
     del: (url) => axios.delete(url).then(sleep(1000)).then(response=>response.data) 
     

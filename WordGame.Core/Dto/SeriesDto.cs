@@ -15,5 +15,7 @@ namespace WordGame.Core.Dto
 		public int TotalSeason { get; set; }
 		public bool IsFinished { get; set; }
 		public string Image { get; set; }
+
+		public ICollection<EpisodeDto> Episodes { get; set; }
 	}
 }
