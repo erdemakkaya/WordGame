@@ -9,7 +9,7 @@ namespace WordGame.Core.Enumerations.Base
 {
     public abstract class Enumeration : IComparable
     {
-        public string Name { get; private set; }
+		public string Name { get; private set; }
 
         public int Id { get; private set; }
 

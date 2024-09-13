@@ -3,7 +3,7 @@ using WordGame.Core.Dto.Base;
 
 namespace WordGame.Core.Dto
 {
-	public class GrammerModel:DtoBase<int>
+	public class GrammerDto:DtoBase<int>
 	{
 		public string Name { get; set; }
 		public string Category { get; set; }

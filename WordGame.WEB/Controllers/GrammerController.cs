@@ -25,7 +25,7 @@ namespace WordGame.WEB.Controllers
 
 		// GET: api/<GrammerController>
 		[HttpGet]
-		[ProducesResponseType(typeof(IEnumerable<GrammerModel>), 200)]
+		[ProducesResponseType(typeof(IEnumerable<GrammerDto>), 200)]
 		public async Task<IActionResult> Get()
 		{
 			var grammers = await _grammerService.GetAsync();
@@ -35,7 +35,7 @@ namespace WordGame.WEB.Controllers
 
 		// GET api/<GrammerController>/5
 		[HttpGet("{id}")]
-		[ProducesResponseType(typeof(GrammerModel), 200)]
+		[ProducesResponseType(typeof(GrammerDto), 200)]
 		public async Task<IActionResult> GetAsync(int id)
 		{
 			var grammer = await _grammerService.GetAsync(id);
@@ -47,11 +47,11 @@ namespace WordGame.WEB.Controllers
 
 		// POST api/<GrammerController>
 		[HttpPost]
-		[ProducesResponseType(typeof(ApiResult<GrammerModel>), 200)]
-		[ProducesResponseType(typeof(ApiResult<GrammerModel>), 400)]
-		[ProducesResponseType(typeof(ApiResult<GrammerModel>), 500)]
+		[ProducesResponseType(typeof(ApiResult<GrammerDto>), 200)]
+		[ProducesResponseType(typeof(ApiResult<GrammerDto>), 400)]
+		[ProducesResponseType(typeof(ApiResult<GrammerDto>), 500)]
 		[Consumes("application/json")]
-		public async Task<IActionResult> PostAsync([FromBody] GrammerModel model)
+		public async Task<IActionResult> PostAsync([FromBody] GrammerDto model)
 		{
 			try
 			{
@@ -67,7 +67,7 @@ namespace WordGame.WEB.Controllers
 
 		// PUT api/<GrammerController>/5
 		[HttpPut("{id}")]
-		public async Task<IActionResult> Put(int id, [FromBody] GrammerModel model)
+		public async Task<IActionResult> Put(int id, [FromBody] GrammerDto model)
 		{
 			try
 			{

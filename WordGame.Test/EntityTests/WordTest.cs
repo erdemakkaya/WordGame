@@ -21,7 +21,7 @@ namespace WordGame.Test.EntityTests
 	public class WordTest
 	{
 		IMapper _mapper;
-		private readonly IValidator<WordModel> _validator;
+		private readonly IValidator<WordDto> _validator;
 		private Mock<IWordRepository> _wordRepository;
 		private Mock<IUnitofWork> _unitOfWork;
 		WordService wordService;
@@ -115,7 +115,7 @@ namespace WordGame.Test.EntityTests
 		[Fact]
 		public async Task New_Word_Can_Be_Added()
 		{
-			var word = new WordModel
+			var word = new WordDto
 			{
 				WordName = "Test",
 				TurkishTranslator = "deneme",
@@ -136,7 +136,7 @@ namespace WordGame.Test.EntityTests
 		{
 			int currentCount = words.Count;
 
-			WordModel word = null;
+			WordDto word = null;
 
 			var result = await wordService.CreateAsync(word);
 
@@ -149,7 +149,7 @@ namespace WordGame.Test.EntityTests
 		public async Task Word_With_Empty_Name_Cannot_Be_Added()
 		{
 			int currentCount = words.Count;
-			var word = new WordModel
+			var word = new WordDto
 			{
 				WordName = string.Empty,
 				TurkishTranslator = "deneme",
@@ -169,7 +169,7 @@ namespace WordGame.Test.EntityTests
 		[Fact]
 		public async Task If_New_Word_Added_Count_Should_Be_One()
 		{
-			var word = new WordModel
+			var word = new WordDto
 			{
 				WordName = "newTest6",
 				TurkishTranslator = "deneme6",
@@ -185,7 +185,7 @@ namespace WordGame.Test.EntityTests
 		[Fact]
 		public async Task If_Exist_Word_Added_Count_Should_Be_Two()
 		{
-			var word = new WordModel
+			var word = new WordDto
 			{
 				WordName = "newTest7",
 				TurkishTranslator = "deneme7",

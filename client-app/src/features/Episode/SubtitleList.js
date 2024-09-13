@@ -242,7 +242,7 @@ export default function SubtitleList() {
               columns={columns}
               pagination={{ pageSize: 50 }}
               expandable={{
-                expandedRowRender: record => <p style={{ margin: 0 }}>{record.turkishText}</p>,
+                expanndedRowRender: record => <p style={{ margin: 0 }}>{record.turkishText}</p>,
                 rowExpandable: record => record.turkishText !== '',
               }}
             />

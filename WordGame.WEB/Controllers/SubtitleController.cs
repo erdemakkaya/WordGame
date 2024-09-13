@@ -10,6 +10,7 @@ using WordGame.WEB.Models;
 
 namespace WordGame.WEB.Controllers
 {
+
 	[Route("api/[controller]")]
 	[ApiController]
 	public class SubtitleController : BaseApiController
@@ -52,9 +53,9 @@ namespace WordGame.WEB.Controllers
 		[ProducesResponseType(typeof(ApiResult<SubtitleDto>), 400)]
 		[ProducesResponseType(typeof(ApiResult<SubtitleDto>), 500)]
 		//[Consumes("application/json")]
-		public IActionResult Post([FromForm] FileModel formData)
+		public async Task<IActionResult> Post([FromForm] FileModel formData)
 		{
-			var result = _subtitleService.CreateFromFileAsync(formData.FormFile, formData.episodeId);
+			var result = await _subtitleService.CreateFromFileAsync(formData.FormFile, formData.episodeId);
 
 			return null;
 		}

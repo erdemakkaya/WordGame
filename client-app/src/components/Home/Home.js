@@ -18,7 +18,6 @@ import {
   MenuUnfoldOutlined,
   RightOutlined,
 } from "@ant-design/icons";
-import Paragraph from "antd/lib/typography/Paragraph";
 import "../../assets/styles/main.css";
 import "../../assets/styles/responsive.css";
 
@@ -40,9 +39,10 @@ import team2 from "../../assets/images/team-2.jpg";
 import team3 from "../../assets/images/team-3.jpg";
 import team4 from "../../assets/images/team-4.jpg";
 import card from "../../assets/images/info-card-1.jpg";
+import Flashcard from "../Common/Card/FlashCard";
 
 function Home() {
-  const { Title, Text } = Typography;
+  const { Title, Text, Paragraph } = Typography;
 
   const [APIData, setAPIData] = useState([]);
 
@@ -522,7 +522,10 @@ function Home() {
             </Card>
           </Col>
         </Row>
-
+        <Flashcard
+        question="What is the capital of France?"
+        answer="Paris"
+      />
         <Row gutter={[24, 0]}>
           <Col xs={24} md={12} sm={24} lg={12} xl={14} className="mb-24">
             <Card bordered={false} className="criclebox h-full">

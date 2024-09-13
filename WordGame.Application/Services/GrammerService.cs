@@ -24,16 +24,16 @@ namespace WordGame.Application.Services
 			_mapper = mapper;
 		}
 
-		public async Task<GrammerModel> CreateAsync(GrammerModel dtoObject)
+		public async Task<GrammerDto> CreateAsync(GrammerDto dtoObject)
 		{
 			var mappedEntity = _mapper.Map<Grammer>(dtoObject);
 			var newEntity = await _repository.AddAsync(mappedEntity);
 			await _unitOfWork.SaveChangesAsync();
-			var newMappedModel = _mapper.Map<GrammerModel>(newEntity);
+			var newMappedModel = _mapper.Map<GrammerDto>(newEntity);
 			return newMappedModel;
 		}
 
-		public async Task<GrammerModel> CreateOrUpdateAsync(GrammerModel dtoObject)
+		public async Task<GrammerDto> CreateOrUpdateAsync(GrammerDto dtoObject)
 		{
 			bool isExist = await _repository.AnyAsync(x => x.Id.Equals(dtoObject.Id));
 			if (isExist) return await UpdateAsync(dtoObject);
@@ -51,47 +51,47 @@ namespace WordGame.Application.Services
 			return true;
 		}
 
-		public async Task<IEnumerable<GrammerModel>> GetAsync()
+		public async Task<IEnumerable<GrammerDto>> GetAsync()
 		{
 			var entities = await _repository.GetAllAsync();
-			var mappedGrammerModels = _mapper.Map<IEnumerable<GrammerModel>>(entities);
+			var mappedGrammerModels = _mapper.Map<IEnumerable<GrammerDto>>(entities);
 			return mappedGrammerModels;
 		}
 
-		public async Task<GrammerModel> GetAsync(int id)
+		public async Task<GrammerDto> GetAsync(int id)
 		{
 			var entity = await _repository.GetByIdAsync(id);
 
-			var mappedModel = _mapper.Map<GrammerModel>(entity);
+			var mappedModel = _mapper.Map<GrammerDto>(entity);
 			return mappedModel;
 		}
 
-		public async Task<GrammerModel> UpdateAsync(GrammerModel dtoObject)
+		public async Task<GrammerDto> UpdateAsync(GrammerDto dtoObject)
 		{
 			var mappedEntity = _mapper.Map<Grammer>(dtoObject);
 			var updatedEntity = await _repository.UpdateAsync(mappedEntity);
 
 			await _unitOfWork.SaveChangesAsync();
-			var updatedModel = _mapper.Map<GrammerModel>(updatedEntity);
+			var updatedModel = _mapper.Map<GrammerDto>(updatedEntity);
 			return updatedModel;
 		}
 
 
-		public async Task<GrammerModel> GetGrammerByNameAsync(string name)
+		public async Task<GrammerDto> GetGrammerByNameAsync(string name)
 		{
 			var entity = await _repository.FirstOrDefaultAsync(x => x.Name.ToLower().Equals(name));
 			if (entity == null) return null;
 
-			var mappedModel = _mapper.Map<GrammerModel>(entity);
+			var mappedModel = _mapper.Map<GrammerDto>(entity);
 			return mappedModel;
 		}
 
-		public async Task<IEnumerable<GrammerModel>> GetGrammersByNameAsync(string grammerName)
+		public async Task<IEnumerable<GrammerDto>> GetGrammersByNameAsync(string grammerName)
 		{
 			var entities = await _repository.GetAsync(x => x.Name.ToLower().Equals(grammerName));
 			if (entities == null) return null;
 
-			var mappedGrammers = _mapper.Map<IEnumerable<GrammerModel>>(entities);
+			var mappedGrammers = _mapper.Map<IEnumerable<GrammerDto>>(entities);
 			return mappedGrammers;
 		}
 	}

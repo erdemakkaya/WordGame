@@ -8,7 +8,7 @@ using WordGame.Core.Dto;
 
 namespace WordGame.Application.Validators
 {
-	public class WordValidator: AbstractValidator<WordModel>
+	public class WordValidator: AbstractValidator<WordDto>
 	{
 		public WordValidator()
 		{

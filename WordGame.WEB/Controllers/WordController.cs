@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using WordGame.Core.Dto;
 using WordGame.Core.Services;
 using WordGame.WEB.Controllers.Base;
 using WordGame.WEB.Helper;
+using WordGame.WEB.Models.ResponseModels.WordResponseModel;
 
 namespace WordGame.WEB.Controllers
 {
@@ -21,49 +20,52 @@ namespace WordGame.WEB.Controllers
 		}
 
 		[HttpGet]
-		[ProducesResponseType(typeof(IEnumerable<WordModel>), 200)]
+		[ProducesResponseType(typeof(WordListResponse), 200)]
 		public async Task<IActionResult> Get()
 		{
 			var words = await _wordService.GetAsync();
+			var response = new WordListResponse { Words = words };
 
-			return Success("Words listed.", null, words);
+			return Success("Words listed.", null, response);
 		}
 
 		[HttpGet("statistic")]
-		[ProducesResponseType(typeof(IEnumerable<WordModel>), 200)]
+		[ProducesResponseType(typeof(WordListResponse), 200)]
 		public async Task<IActionResult> GetByStatistic()
 		{
 			var words = await _wordService.GetWordsByStatisticAsync();
-			return Success("Words listed.", null, words);
+			var response = new WordListResponse { Words = words };
+
+			return Success("Words listed.", null, response);
 		}
 
 		[HttpGet("{name}")]
 		public async Task<IActionResult> Get(string name)
 		{
 			int id;
-			WordModel word;
+			WordResponse wordResponse = new WordResponse();
 
 			bool isNumericId = int.TryParse(name, out id);
 
-			word = isNumericId ? await _wordService.GetAsync(id) : await _wordService.GetWordByNameAsync(name);
+			wordResponse.Word = isNumericId ? await _wordService.GetAsync(id) : await _wordService.GetWordByNameAsync(name);
 
-			if (word == null) return NotFound<object>("Word not found.", "Word not found in database.", null);
+			if (wordResponse.Word == null) return NotFound<object>("Word not found.", "Word not found in database.", null);
 
-			return Success("Word found.", null, word);
+			return Success("Word found.", null, wordResponse);
 		}
 
 		[HttpPost]
-		[ProducesResponseType(typeof(ApiResult<WordModel>), 200)]
-		[ProducesResponseType(typeof(ApiResult<WordModel>), 400)]
-		[ProducesResponseType(typeof(ApiResult<WordModel>), 500)]
+		[ProducesResponseType(typeof(ApiResult<WordResponse>), 200)]
+		[ProducesResponseType(typeof(ApiResult<WordResponse>), 400)]
+		[ProducesResponseType(typeof(ApiResult<WordResponse>), 500)]
 		[Consumes("application/json")]
-		public async Task<IActionResult> Post([FromBody] WordModel model)
+		public async Task<IActionResult> Post([FromBody] WordResponse model)
 		{
 			try
 			{
 				if (model == null) return NotFound("Word not found.", null, model);
 
-				var result = await _wordService.CreateOrIncreaseAsync(model);
+				var result = await _wordService.CreateOrIncreaseAsync(model.Word);
 
 				if (result == null)
 				{
@@ -79,11 +81,11 @@ namespace WordGame.WEB.Controllers
 		}
 
 		[HttpPut("{id}")]
-		public async Task<IActionResult> Put(int id, [FromBody] WordModel model)
+		public async Task<IActionResult> Put(int id, [FromBody] WordResponse model)
 		{
 			try
 			{
-				var wordModel = await _wordService.UpdateAsync(model);
+				var wordModel = await _wordService.UpdateAsync(model.Word);
 				bool isNotNull = wordModel != null;
 				if (isNotNull) return Success("Word updated successfully.", null, wordModel);
 
@@ -144,6 +146,5 @@ namespace WordGame.WEB.Controllers
 				return Error<object>("Something went wrong!", ex.Message, null);
 			}
 		}
-
 	}
 }

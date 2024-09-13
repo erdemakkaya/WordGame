@@ -5,6 +5,8 @@ class StatisticService {
       let result = await Requests.get('statistic');
       return result;
     }
+
+    
    
   }
   

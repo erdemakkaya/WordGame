@@ -45,8 +45,6 @@ namespace WordGame.WEB
 			{
 				c.SwaggerDoc("v1", new OpenApiInfo { Title = "WordGame.WEB", Version = "v1" });
 			});
-
-			
 			services.AddCors(opt =>
 			{
 				opt.AddPolicy("CorsPolicy", policy =>
@@ -65,7 +63,6 @@ namespace WordGame.WEB
 			//services.AddSingleton(mapper);
 
 			//#endregion
-
 			services.AddValidatorsFromAssemblyContaining<WordValidator>();
 
 

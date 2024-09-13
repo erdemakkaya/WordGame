@@ -16,11 +16,11 @@ namespace WordGame.Application.Services
 		IUnitofWork _unitOfWork;
 		IWordRepository _repository;
 		IMapper _mapper;
-		private readonly IValidator<WordModel> _validator;
+		private readonly IValidator<WordDto> _validator;
 
 
 
-		public WordService(IMapper mapper, IUnitofWork unitOfWork, IValidator<WordModel> validator, IWordRepository repository)
+		public WordService(IMapper mapper, IUnitofWork unitOfWork, IValidator<WordDto> validator, IWordRepository repository)
 		{
 			_unitOfWork = unitOfWork;
 			_repository = repository;
@@ -28,7 +28,7 @@ namespace WordGame.Application.Services
 			_validator = validator;
 		}
 
-		public async Task<WordModel> CreateAsync(WordModel dtoObject)
+		public async Task<WordDto> CreateAsync(WordDto dtoObject)
 		{
 
 			var validationResult = await _validator.ValidateAsync(dtoObject);
@@ -44,11 +44,11 @@ namespace WordGame.Application.Services
 			var newEntity = await _repository.AddAsync(mappedEntity);
 
 			await _unitOfWork.SaveChangesAsync();
-			var newMappedModel = _mapper.Map<WordModel>(newEntity);
+			var newMappedModel = _mapper.Map<WordDto>(newEntity);
 			return newMappedModel;
 		}
 
-		public async Task<WordModel> CreateOrUpdateAsync(WordModel dtoObject)
+		public async Task<WordDto> CreateOrUpdateAsync(WordDto dtoObject)
 		{
 			var validationResult = await _validator.ValidateAsync(dtoObject);
 			if (!validationResult.IsValid)
@@ -71,32 +71,32 @@ namespace WordGame.Application.Services
 			return true;
 		}
 
-		public async Task<IEnumerable<WordModel>> GetAsync()
+		public async Task<IEnumerable<WordDto>> GetAsync()
 		{
 			var entities = await _repository.GetAllAsync();
-			var mappedWordModels = _mapper.Map<IEnumerable<WordModel>>(entities);
+			var mappedWordModels = _mapper.Map<IEnumerable<WordDto>>(entities);
 			return mappedWordModels;
 		}
 
-		public async Task<WordModel> GetAsync(int id)
+		public async Task<WordDto> GetAsync(int id)
 		{
 			var entity = await _repository.GetByIdAsync(id);
 
-			var mappedModel = _mapper.Map<WordModel>(entity);
+			var mappedModel = _mapper.Map<WordDto>(entity);
 			return mappedModel;
 		}
 
-		public async Task<WordModel> UpdateAsync(WordModel dtoObject)
+		public async Task<WordDto> UpdateAsync(WordDto dtoObject)
 		{
 			var mappedEntity = _mapper.Map<Word>(dtoObject);
 			var updatedEntity = await _repository.UpdateAsync(mappedEntity);
 			await _unitOfWork.SaveChangesAsync();
 
-			var updatedModel = _mapper.Map<WordModel>(updatedEntity);
+			var updatedModel = _mapper.Map<WordDto>(updatedEntity);
 			return updatedModel;
 		}
 
-		public async Task<WordModel> CreateOrIncreaseAsync(WordModel wordModel)
+		public async Task<WordDto> CreateOrIncreaseAsync(WordDto wordModel)
 		{
 			if (wordModel.Id != 0)
 				return await UpdateAsync(wordModel);
@@ -106,22 +106,22 @@ namespace WordGame.Application.Services
 
 			existModel.AddedCount++;
 			var exisWordModel = await _repository.UpdateAsync(existModel);
-			var newMappedModel = _mapper.Map<WordModel>(exisWordModel);
+			var newMappedModel = _mapper.Map<WordDto>(exisWordModel);
 			return newMappedModel;
 		}
 
-		public async Task<IEnumerable<WordModel>> GetWordsByNameAsync(string wordName)
+		public async Task<IEnumerable<WordDto>> GetWordsByNameAsync(string wordName)
 		{
 			var wordEntities = await _repository.GetWordsByNameAsync(wordName);
-			var mappedWordModels = _mapper.Map<IEnumerable<WordModel>>(wordEntities);
+			var mappedWordModels = _mapper.Map<IEnumerable<WordDto>>(wordEntities);
 			return mappedWordModels;
 		}
 
 
-		public async Task<WordModel> GetWordByNameAsync(string wordName)
+		public async Task<WordDto> GetWordByNameAsync(string wordName)
 		{
 			var wordEntity = await _repository.GetWordByNameAsync(wordName);
-			return _mapper.Map<WordModel>(wordEntity);
+			return _mapper.Map<WordDto>(wordEntity);
 		}
 
 		public async Task<bool> IncreaseTrueOrFalseCount(int id, bool isCorrect)
@@ -137,15 +137,16 @@ namespace WordGame.Application.Services
 			{
 				entity.FalseCount++;
 			}
-			var updatedEntity = await _repository.UpdateAsync(entity);
+
+			await _repository.UpdateAsync(entity);
 			await _unitOfWork.SaveChangesAsync();
 
 			return true;
 		}
-		public async Task<IEnumerable<WordModel>> GetWordsByStatisticAsync()
+		public async Task<IEnumerable<WordDto>> GetWordsByStatisticAsync()
 		{
 			var wordEntities = await _repository.GetWordsByStatistic();
-			var mappedWordModels = _mapper.Map<IEnumerable<WordModel>>(wordEntities);
+			var mappedWordModels = _mapper.Map<IEnumerable<WordDto>>(wordEntities);
 			return mappedWordModels;
 		}
 	}

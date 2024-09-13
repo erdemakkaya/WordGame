@@ -31,17 +31,13 @@ namespace WordGame.Application.ConfigurationModules
 
 			//    var opt = new DbContextOptionsBuilder<WordGameContext>();
 			//    opt.UseNpgsql(config.GetConnectionString("DefaultConnection"));
-
+			builder.RegisterType<WordGameContextFactory>().AsSelf().SingleInstance();
 			builder.Register(c =>
-			{
-				var config = c.Resolve<IConfiguration>();
-
-				var opt = new DbContextOptionsBuilder<WordGameContext>();
-				opt.UseNpgsql(config.GetConnectionString("DefaultConnection"));
-
-				return new WordGameContext(opt.Options);
-			}).As<BaseContext>().InstancePerLifetimeScope();
-			//return new WordGameContext(opt.Options);
+{
+    var config = c.Resolve<IConfiguration>();
+    var factory = c.Resolve<WordGameContextFactory>();
+    return factory.CreateDbContext(new[] { "Host=127.0.0.1;Port=5432;Database=WordDb;User ID=postgres;Password=12345;" });
+}).As<BaseContext>().InstancePerLifetimeScope();
 			//}).AsSelf().InstancePerLifetimeScope();
 
 

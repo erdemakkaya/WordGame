@@ -24,5 +24,24 @@ namespace WordGame.Core.Extensions
 			}
 			return sb.ToString();
 		}
+
+		public static int ConvertToInteger(this string s)
+		{
+			try
+			{
+				if (s.IsNullOrEmpty()) return 0;
+				int n;
+				bool isNumeric = int.TryParse(s, out n);
+				if (isNumeric) return n;
+
+				return 0;
+			}
+			catch (System.Exception e)
+			{
+
+				throw;
+			}
+		
+		}
 	}
 }

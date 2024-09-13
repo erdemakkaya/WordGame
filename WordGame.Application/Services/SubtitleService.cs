@@ -37,21 +37,31 @@ namespace WordGame.Application.Services
 
 		public async Task<bool> CreateFromFileAsync(IFormFile formFile, int EpisodeId)
 		{
-			if (formFile == null || formFile.Length == 0)
-				return false;
+			try
+			{
+				if (formFile == null || formFile.Length == 0)
+					return false;
 
-			var fileContent = formFile.ReadAsList();
-			var result = FileHelpers.ParseSRTBySB(fileContent);
+				var fileContent = formFile.ReadAsList();
+				var result = FileHelpers.ParseSRTBySB(fileContent);
 
-			var mappedList = _mapper.Map<IEnumerable<SubtitleDto>>(result, opts =>
-			opts.Items["EpisodeId"] = EpisodeId);
+				var mappedList = _mapper.Map<IEnumerable<SubtitleDto>>(result, opts =>
+				opts.Items["EpisodeId"] = EpisodeId);
 
-			var mappedRange = _mapper.Map<IEnumerable<Subtitle>>(mappedList);
-			var list = await _repository.AddRangeAsync(mappedRange);
+				var mappedRange = _mapper.Map<IEnumerable<Subtitle>>(mappedList);
+				var list = await _repository.AddRangeAsync(mappedRange);
 
-			await _unitOfWork.SaveChangesAsync();
+				await _unitOfWork.SaveChangesAsync();
 
-			return true;
+				return true;
+
+			}
+			catch (System.Exception e)
+			{
+
+				throw e;
+			}
+			
 
 		}
 

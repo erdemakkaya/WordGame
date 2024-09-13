@@ -11,7 +11,8 @@ import WordService from '../../services/wordService'
     async function fetchMyAPI() {
         setLoading(true);
       var response=  await WordService.getAllByStatistic();
-      setAPIData(response.data);
+      console.log(response.data.words);
+      setAPIData(response.data.words);
       setLoading(false);
     }
     fetchMyAPI()

@@ -11,6 +11,7 @@ class WordService {
       return result;
     }
     async get(id) {
+      debugger;
       let result = await Requests.get(`word/${id}`);
       return result;
     }
@@ -21,13 +22,13 @@ class WordService {
     }
   
     async createOrEdit(entity) {
-      console.log(entity);
+      const wordResponse = { word: entity };
       const url = entity.id ? `word/${entity.id}` : `word`;
-      let result = entity.id ? await Requests.put(url, entity) : 
-                        await Requests.post(url, entity);
+      let result = entity.id ? await Requests.put(url, wordResponse) : 
+                        await Requests.post(url, wordResponse);
       return result;
     }
-  
+
     async delete(id) {
       let result = await Requests.del(`word/${id}`);
       return result;

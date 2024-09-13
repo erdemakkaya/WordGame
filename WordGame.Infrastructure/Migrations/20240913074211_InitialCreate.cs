@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -6,10 +7,53 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace WordGame.Infrastructure.Migrations
 {
-    public partial class Subtitle : Migration
+    /// <inheritdoc />
+    public partial class InitialCreate : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Grammers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    Category = table.Column<string>(type: "text", nullable: true),
+                    BasicRules = table.Column<string>(type: "text", nullable: true),
+                    Hints = table.Column<string>(type: "text", nullable: true),
+                    Tags = table.Column<string>(type: "jsonb", nullable: true),
+                    ExampleSentence = table.Column<string>(type: "text", nullable: true),
+                    CreateDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    LastModificationTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
+                    DeletionTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Grammers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Selects",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: true),
+                    Value = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: true),
+                    Color = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: true),
+                    CreateDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    LastModificationTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
+                    DeletionTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Selects", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Series",
                 columns: table => new
@@ -31,6 +75,34 @@ namespace WordGame.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Series", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Words",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    WordName = table.Column<string>(type: "text", nullable: true),
+                    TurkishTranslator = table.Column<string>(type: "text", nullable: true),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    Tags = table.Column<string>(type: "jsonb", nullable: true),
+                    AddedCount = table.Column<int>(type: "integer", nullable: false),
+                    TrueCount = table.Column<int>(type: "integer", nullable: false),
+                    FalseCount = table.Column<int>(type: "integer", nullable: false),
+                    ExampleSentence = table.Column<string>(type: "text", nullable: true),
+                    Type = table.Column<string>(type: "text", nullable: true),
+                    Pronucation = table.Column<string>(type: "text", nullable: true),
+                    FamiliarWords = table.Column<List<string>>(type: "jsonb", nullable: true),
+                    ImageUrl = table.Column<string>(type: "text", nullable: true),
+                    CreateDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    LastModificationTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
+                    DeletionTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Words", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -101,10 +173,20 @@ namespace WordGame.Infrastructure.Migrations
                 column: "EpisodeId");
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Grammers");
+
+            migrationBuilder.DropTable(
+                name: "Selects");
+
+            migrationBuilder.DropTable(
                 name: "Subtitles");
+
+            migrationBuilder.DropTable(
+                name: "Words");
 
             migrationBuilder.DropTable(
                 name: "Episodes");

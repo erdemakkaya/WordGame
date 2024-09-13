@@ -4,6 +4,7 @@ import { Row, Col, Typography, Input, Form, Button, Select } from 'antd';
 import WordNotification from '../Notification/WordNotification';
 import WordService from '../../services/wordService'
 import WordLayout from '../Layout';
+import TagSelect from '../Common/Select/TagSelect';
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
@@ -38,18 +39,26 @@ const Create = () => {
   const { id } = useParams();
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
+  const [imageUrl, setImageUrl] = useState('');
+
+const handleImageUrlChange = (e) => {
+  setImageUrl(e.target.value);
+};
+
   const navigate = useNavigate();
   useEffect(() => {
     async function fetchMyAPI() {
+      debugger;
 
       defaultValues = constValues;
       if (id != null && id != 0) {
         var response = await WordService.get(id);
         if (response.success) {
-          defaultValues.model = response.data;
+          defaultValues.model = { ...defaultValues.model, ...response.data.word };
         }
       }
       form.setFieldsValue(defaultValues);
+       form.setFieldsValue({ 'model.tags': defaultValues.model.tags })
     }
     fetchMyAPI();
   }, [form, id]);
@@ -155,11 +164,23 @@ const Create = () => {
                   },
                 ]}
               >
-                <Select mode="multiple" placeholder="Please select favourite colors">
-                  <Option value="important">Important</Option>
-                  <Option value="rare">Rare</Option>
-                  <Option value="basic">Basic</Option>
+               <TagSelect 
+               options={['Important', 'Rare', 'Basic', 'Advanced']}
+               placeholder="Please select favourite colors">
+                </TagSelect>
+              </Form.Item>
+              <Form.Item name={['model', 'familiarWords']} label="Familiar Words">
+                <Select mode="tags" style={{ width: '100%' }} placeholder="Add words">
+                  {/* Add your options here */}
                 </Select>
+              </Form.Item>
+
+              <Form.Item name={['model', 'imageUrl']} label="Image URL">
+                <Input placeholder="Enter image URL" onChange={handleImageUrlChange} />
+              </Form.Item>
+
+              <Form.Item label="Image Preview">
+                <img src={form.getFieldValue(['model', 'imageUrl'])} alt="" style={{ maxWidth: '100%' }} />
               </Form.Item>
 
               <Form.Item name={['model', 'description']} label="Introduction">

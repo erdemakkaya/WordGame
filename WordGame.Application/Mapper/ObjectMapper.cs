@@ -5,6 +5,7 @@ using System.Text.Json;
 using WordGame.Application.Mapper.Base;
 using WordGame.Core.Dto;
 using WordGame.Core.Entities;
+using WordGame.Core.Extensions;
 
 namespace WordGame.Application.Mapper
 {
@@ -32,17 +33,20 @@ namespace WordGame.Application.Mapper
         public WordGameDtoMapper()
         {
           
-            CreateMap<Word, WordModel>()
-               .ForMember(t => t.Tags, m => m.MapFrom(u => MapFromJson(u.Tags)));
+CreateMap<Word, WordDto>()
+            .ForMember(t => t.Tags, m => m.MapFrom(u => MapFromJson(u.Tags)))
+            .ForMember(t => t.FamiliarWords, m => m.MapFrom(u => u.FamiliarWords)); // new mapping
 
-            CreateMap<WordModel, Word>()
-				.DoNotValidate(x => x.Id)
-				.ForMember(t => t.Tags, m => m.MapFrom(u => MapToJson(u.Tags)));
+        CreateMap<WordDto, Word>()
+            .DoNotValidate(x => x.Id)
+            .ForMember(t => t.Tags, m => m.MapFrom(u => MapToJson(u.Tags)))
+            .ForMember(t => t.FamiliarWords, m => m.MapFrom(u => u.FamiliarWords)); // new mapping
 
-            CreateMap<Grammer, GrammerModel>()
+
+            CreateMap<Grammer, GrammerDto>()
    .ForMember(t => t.Tags, m => m.MapFrom(u => MapFromJson(u.Tags)));
 
-            CreateMap<GrammerModel, Grammer>()
+            CreateMap<GrammerDto, Grammer>()
                 .DoNotValidate(x => x.Id)
                 .ForMember(t => t.Tags, m => m.MapFrom(u => MapToJson(u.Tags)));
 
@@ -51,8 +55,9 @@ namespace WordGame.Application.Mapper
             CreateMap<Subtitle, SubtitleDto>().ReverseMap();
 
             CreateMap<SrtModel, SubtitleDto>()
+                .ForMember(d=> d.Section ,m => m.MapFrom(u=>u.Segment.ConvertToInteger()))
                 .ForMember(d=> d.EpisodeId,opt => opt.MapFrom(
-					(src, dst, arg3, context) => context.TryGetItems(out var items) ? (string)items["EpisodeId"]:null
+					(src, dst, arg3, context) => (int)context.Items["EpisodeId"]
 				));
 
 

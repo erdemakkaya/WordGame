@@ -3,7 +3,7 @@ using WordGame.Core.Dto.Base;
 
 namespace WordGame.Core.Dto
 {
-	public class WordModel:DtoBase<int>
+	public class WordDto : DtoBase<int>
 	{
 		public string WordName { get; set; }
 		public string TurkishTranslator { get; set; }
@@ -15,5 +15,7 @@ namespace WordGame.Core.Dto
 		public string Type { get; set; }
 		public List<string> Tags { get; set; }
 		public string Pronucation { get; set; }
+		public List<string> FamiliarWords { get; set; } // New property
+		public string ImageUrl { get; set; } // New property
 	}
 }

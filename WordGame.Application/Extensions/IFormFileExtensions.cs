@@ -42,24 +42,24 @@ namespace WordGame.Application.Extensions
 		/// <param name="file"></param>
 		/// <param name="pool"></param>
 		/// <returns></returns>
-		public static async Task<string> ReadAsStringAsync(
-	this IFormFile file, Object<StringBuilder> pool)
-		{
-			var builder = pool.Get();
-			try
-			{
-				using var reader = new StreamReader(file.OpenReadStream());
-				while (reader.Peek() >= 0)
-				{
-					builder.AppendLine(await reader.ReadLineAsync());
-				}
-				return builder.ToString();
-			}
-			finally
-			{
-				pool.Return(builder);
-			}
-		}
+	//	public static async Task<string> ReadAsStringAsync(
+	//this IFormFile file, Object<StringBuilder> pool)
+	//	{
+	//		var builder = pool.Get();
+	//		try
+	//		{
+	//			using var reader = new StreamReader(file.OpenReadStream());
+	//			while (reader.Peek() >= 0)
+	//			{
+	//				builder.AppendLine(await reader.ReadLineAsync());
+	//			}
+	//			return builder.ToString();
+	//		}
+	//		finally
+	//		{
+	//			pool.Return(builder);
+	//		}
+	//	}
 #endif
 
 	}

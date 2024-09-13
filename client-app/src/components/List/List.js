@@ -200,7 +200,8 @@ export default function List() {
   useEffect(() => {
     async function fetchMyAPI() {
       var response = await WordService.getAll();
-      setAPIData(response.data);
+      debugger;
+      setAPIData(response.data.words);
     }
     fetchMyAPI()
   }, [])
